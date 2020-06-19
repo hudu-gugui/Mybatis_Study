@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hudu.dao.StudentMapper">
+
+    <!--在当前Mapper.xml中使用二级缓存-->
+    <cache eviction="FIFO"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/>
+
+    <select id="getStudents" resultType="Student">
+        select * from student
+    </select>
+
+    <delete id="deleteStudent" parameterType="_int">
+        delete from student where id = #{sid}
+    </delete>
+
+    <insert id="addStudent" parameterType="Student">
+        insert into student(id,name,tid) values (#{id},#{name},#{tid})
+    </insert>
+
+    <update id="updateStudent" parameterType="Student">
+        update student set name = #{name},tid = #{tid} where id = #{id}
+    </update>
+
+
+    <select id="getStudents2" resultMap="StudentTMap">
+        select * from student;
+    </select>
+
+    <resultMap id="StudentTMap" type="StudentT">
+        <result property="sid" column="id"/>
+    </resultMap>
+
+
+    <!--动态SQL-->
+    <select id="getStudentBy" resultType="Student">
+        select * from student
+        <where>
+            <if test="sid != null">
+                id = #{sid}
+            </if>
+            <if test="sname != null">
+                and name = #{sname}
+            </if>
+        </where>
+    </select>
+
+    <select id="getStudentBy2" resultType="Student">
+        select * from student
+        <where>
+            <choose>
+                <when test="sid != null">
+                    id = #{sid}
+                </when>
+                <when test="sname != null">
+                    and name = #{sname}
+                </when>
+                <otherwise>
+                    and tid = #{tid}
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+</mapper>

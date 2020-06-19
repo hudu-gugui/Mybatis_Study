@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--引入外部配置文件-->
+    <properties resource="db.properties"/>
+
+    <settings>
+        <!--标准的日志工厂实现-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!--显示的开启全局缓存-->
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+<!--可以给实体类起别名-->
+    <typeAliases>
+        <typeAlias type="com.hudu.pojo.Student" alias="Student"/>
+        <typeAlias type="com.hudu.pojo.Teacher" alias="Teacher"/>
+        <typeAlias type="com.hudu.pojo.StudentT" alias="StudentT"/>
+        <typeAlias type="com.hudu.pojo.Student2" alias="Student2"/>
+        <typeAlias type="com.hudu.pojo.Teacher2" alias="Teacher2"/>
+        <!--扫描实体类的包，它的默认别名就为这个类的类名,实体类比较多用package扫描-->
+        <!--<package name="com.com.test.pojo"/>-->
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <!--通过resource方法定位StudentMapper.xml文件-->
+        <mapper resource="com/hudu/dao/TeacherMapper.xml"/>
+        <mapper resource="com/hudu/dao/StudentMapper.xml"/>
+        <mapper resource="com/hudu/dao/Student2Mapper.xml"/>
+
+        <!--通过类定位-->
+        <!-- <mapper class="com.hudu.dao.TeacherMapper"/>-->
+        <!-- <mapper class="com.hudu.dao.StudentMapper"/>-->
+
+        <!--通过包扫描-->
+        <!-- <package name="com.hudu.dao"/>-->
+    </mappers>
+
+</configuration>
